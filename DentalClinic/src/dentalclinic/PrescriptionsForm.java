@@ -53,11 +53,8 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel27 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
         jComboBox8 = new javax.swing.JComboBox<>();
         jComboBox10 = new javax.swing.JComboBox<>();
-        jComboBox6 = new javax.swing.JComboBox<>();
         jComboBox7 = new javax.swing.JComboBox<>();
 
         jComboBox9.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
@@ -135,7 +132,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Patient", "Treatments", "Cost", "Medicines", "Quantity"
+                "ID", "Patient", "Treatment", "Cost", "Medicines", "Quantity"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -178,12 +175,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(2, 13, 41));
         jLabel27.setText("Quantity:");
-
-        jComboBox4.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox4.setForeground(new java.awt.Color(2, 13, 41));
-
-        jComboBox5.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox5.setForeground(new java.awt.Color(2, 13, 41));
 
         jComboBox8.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         jComboBox8.setForeground(new java.awt.Color(2, 13, 41));
@@ -234,16 +225,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                     .addGap(296, 296, 296)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(297, Short.MAX_VALUE)))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(296, 296, 296)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(297, Short.MAX_VALUE)))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(306, Short.MAX_VALUE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(287, 287, 287)))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(296, 296, 296)
@@ -302,23 +283,10 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                     .addContainerGap(438, Short.MAX_VALUE)))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(456, 456, 456)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(457, Short.MAX_VALUE)))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(466, Short.MAX_VALUE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(447, 447, 447)))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(449, 449, 449)
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(457, Short.MAX_VALUE)))
         );
-
-        jComboBox6.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox6.setForeground(new java.awt.Color(2, 13, 41));
 
         jComboBox7.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         jComboBox7.setForeground(new java.awt.Color(2, 13, 41));
@@ -353,11 +321,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(480, 480, 480)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(481, Short.MAX_VALUE)))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addContainerGap(490, Short.MAX_VALUE)
                     .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -382,11 +345,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 .addComponent(jLabel17)
                 .addGap(24, 24, 24))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(456, 456, 456)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(457, Short.MAX_VALUE)))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addContainerGap(466, Short.MAX_VALUE)
@@ -466,9 +424,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox10;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JComboBox<String> jComboBox9;
