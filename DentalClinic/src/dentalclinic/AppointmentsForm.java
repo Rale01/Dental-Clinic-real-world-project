@@ -6,8 +6,22 @@ package dentalclinic;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -18,18 +32,29 @@ public class AppointmentsForm extends javax.swing.JFrame {
     /**
      * Creates new form ApointmentsForm
      */
+    
+    Connection con = null;
+    Statement st = null, st1 = null;
+    ResultSet res = null, res1 = null;
+    
+    int key = 1;
+    int apointmentID = 0;
     public AppointmentsForm() {
         initComponents();
-
-        TableColumnModel columnModel = jTable1.getColumnModel();
+        GetPatients();
+        GetTreatments();
+        ApointmentTime.setEditable(false);
+        
+        
+        TableColumnModel columnModel = ApointmentsTbl.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(180);
         columnModel.getColumn(2).setPreferredWidth(180);
         columnModel.getColumn(3).setPreferredWidth(180);
         columnModel.getColumn(4).setPreferredWidth(100);
 
-        jTable1.getTableHeader().setFont(new Font("Century Gothic", Font.BOLD, 25));
-        jTable1.getTableHeader().setOpaque(true);
+        ApointmentsTbl.getTableHeader().setFont(new Font("Century Gothic", Font.BOLD, 25));
+        ApointmentsTbl.getTableHeader().setOpaque(true);
 
         // Create a new instance of DefaultTableCellRenderer
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
@@ -41,7 +66,14 @@ public class AppointmentsForm extends javax.swing.JFrame {
         headerRenderer.setForeground(new Color(255, 255, 255)); // Set to white for example
 
         // Set the default renderer for the table header
-        jTable1.getTableHeader().setDefaultRenderer(headerRenderer);
+        ApointmentsTbl.getTableHeader().setDefaultRenderer(headerRenderer);
+        
+        
+        DisplayApointments();
+        ApointmentCount();
+
+        ClearAll();
+ 
     }
 
     /**
@@ -54,6 +86,7 @@ public class AppointmentsForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
+        time = new cambodia.raven.Time();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -66,21 +99,24 @@ public class AppointmentsForm extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ApointmentsTbl = new javax.swing.JTable();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        ApointmentPatient = new javax.swing.JComboBox<>();
+        ApointmentDate = new com.toedter.calendar.JDateChooser();
+        ApointmentTreatment = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
+        ApointmentTime = new javax.swing.JTextField();
+        showTime = new javax.swing.JButton();
 
         jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+
+        time.setTextRefernce(ApointmentTime);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -176,11 +212,9 @@ public class AppointmentsForm extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(2, 13, 41));
         jLabel25.setText("Time:");
 
-        jDateChooser1.setForeground(new java.awt.Color(2, 13, 41));
-
-        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(2, 13, 41));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ApointmentsTbl.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        ApointmentsTbl.setForeground(new java.awt.Color(2, 13, 41));
+        ApointmentsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -188,11 +222,16 @@ public class AppointmentsForm extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Patient", "Treatment", "Date", "Time"
+                "ID", "Date", "Patient", "Time", "Treatment"
             }
         ));
-        jTable1.setToolTipText("");
-        jScrollPane1.setViewportView(jTable1);
+        ApointmentsTbl.setToolTipText("");
+        ApointmentsTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ApointmentsTblMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(ApointmentsTbl);
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(2, 13, 41));
@@ -202,17 +241,22 @@ public class AppointmentsForm extends javax.swing.JFrame {
         jLabel28.setForeground(new java.awt.Color(2, 13, 41));
         jLabel28.setText("Treatment:");
 
-        jComboBox2.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox2.setForeground(new java.awt.Color(2, 13, 41));
+        ApointmentPatient.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        ApointmentPatient.setForeground(new java.awt.Color(2, 13, 41));
 
-        jDateChooser2.setForeground(new java.awt.Color(2, 13, 41));
+        ApointmentDate.setForeground(new java.awt.Color(2, 13, 41));
 
-        jComboBox3.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox3.setForeground(new java.awt.Color(2, 13, 41));
+        ApointmentTreatment.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        ApointmentTreatment.setForeground(new java.awt.Color(2, 13, 41));
 
         jButton4.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton4.setForeground(new java.awt.Color(2, 13, 41));
         jButton4.setText("Add");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -222,6 +266,11 @@ public class AppointmentsForm extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton5.setForeground(new java.awt.Color(2, 13, 41));
         jButton5.setText("Edit");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -231,6 +280,11 @@ public class AppointmentsForm extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(2, 13, 41));
         jButton2.setText("Delete");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -253,6 +307,18 @@ public class AppointmentsForm extends javax.swing.JFrame {
             }
         });
 
+        ApointmentTime.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        ApointmentTime.setForeground(new java.awt.Color(2, 13, 41));
+
+        showTime.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        showTime.setForeground(new java.awt.Color(2, 13, 41));
+        showTime.setText("...");
+        showTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTimeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -265,34 +331,35 @@ public class AppointmentsForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(220, 941, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel27)
-                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(ApointmentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(41, 41, 41)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24)
+                                    .addComponent(ApointmentPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(66, 66, 66)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel24)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel25)
-                                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(26, 26, 26)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(ApointmentTime, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(showTime, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ApointmentTreatment, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel28)))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(52, 52, 52)
                                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(8, 8, 8))))
+                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -305,33 +372,34 @@ public class AppointmentsForm extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel24)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel24)
+                            .addComponent(jLabel25))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel25)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ApointmentPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ApointmentTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showTime)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addGap(35, 35, 35)
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ApointmentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel28)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ApointmentTreatment, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(jButton5)
                     .addComponent(jButton2)
                     .addComponent(jButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -375,6 +443,173 @@ public class AppointmentsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+                if(ApointmentTime.getText().isEmpty() || ApointmentPatient.getSelectedItem() == null || 
+                ApointmentTreatment.getSelectedItem() == null || ApointmentDate.getDate() == null){
+            JOptionPane.showMessageDialog(this, "Missing information for creating an apointment.");
+        }else{
+            try {
+                ApointmentCount();
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                PreparedStatement add = con.prepareStatement("insert into ApointmentsTbl values(?, ?, ?, ?, ?)");
+                add.setInt(1, apointmentID);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(ApointmentDate.getDate());
+                add.setString(2, formattedDate);
+                add.setString(3, ApointmentPatient.getSelectedItem().toString());
+                add.setString(4, ApointmentTime.getText());
+                add.setString(5, ApointmentTreatment.getSelectedItem().toString());
+                int row = add.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Appoointment Successfully Added!");
+                con.close();
+                DisplayApointments();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void showTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTimeActionPerformed
+        time.showPopup();
+    }//GEN-LAST:event_showTimeActionPerformed
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        if(key == 0){
+            JOptionPane.showMessageDialog(this, "Appointment needs to be selected!");
+        }else{
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(ApointmentDate.getDate());
+                String query = "Update Dentist1.ApointmentsTbl set ApointmentDate ='" + formattedDate.toString() +
+                         "'" + ", ApointmentPatient ='" + ApointmentPatient.getSelectedItem().toString() + "'" 
+                        + ", ApointmentTime ='" + ApointmentTime.getText() + 
+                        "'" + ", ApointmentTreatment ='" + ApointmentTreatment.getSelectedItem().toString() + "'" 
+                        + " where ApointmentID = " + key;
+                Statement Update = con.createStatement();
+                Update.execute(query);
+                JOptionPane.showMessageDialog(this, "Apointment Successfully Updated!");
+                DisplayApointments();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+                if(key == 0){
+            JOptionPane.showMessageDialog(this, "Appointment needs to be selected!");
+        }else{
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                String query = "Delete from Dentist1.ApointmentsTbl where ApointmentID = " + key;
+                Statement Delete = con.createStatement();
+                Delete.execute(query);
+                JOptionPane.showMessageDialog(this, "Appointment Successfully Deleted!");
+                DisplayApointments();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void ApointmentsTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ApointmentsTblMouseClicked
+        DefaultTableModel model = (DefaultTableModel) ApointmentsTbl.getModel();
+        int myIndex = ApointmentsTbl.getSelectedRow();
+        key = Integer.valueOf(model.getValueAt(myIndex, 0).toString());
+        ApointmentPatient.setSelectedItem(model.getValueAt(myIndex, 2).toString());
+        ApointmentTime.setText(model.getValueAt(myIndex, 3).toString());
+        ApointmentTreatment.setSelectedItem(model.getValueAt(myIndex, 4).toString());
+        
+        Object value = model.getValueAt(myIndex, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+        Date date;
+        try {
+            date = sdf.parse((String) value);
+            ApointmentDate.setDate(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(PatientsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ApointmentsTblMouseClicked
+
+    
+private void GetPatients(){
+            try {
+                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                    st = con.createStatement();
+                    res = st.executeQuery("SELECT * FROM Dentist1.PatientsTbl");
+                    
+                    while(res.next()){
+                        String patient = res.getString("PatientName");
+                        ApointmentPatient.addItem(patient);
+                    }
+            } catch (Exception e) {
+            }
+}
+
+private void GetTreatments(){
+            try {
+                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                    st = con.createStatement();
+                    res = st.executeQuery("SELECT * FROM Dentist1.TreatmentsTbl");
+                    
+                    while(res.next()){
+                        String treatment = res.getString("TreatmentName");
+                        ApointmentTreatment.addItem(treatment);
+                    }
+            } catch (Exception e) {
+            }
+}
+
+private void ClearAll(){
+    ApointmentDate.setCalendar(null);
+    ApointmentPatient.setSelectedItem(null);
+    ApointmentTime.setText("");
+    ApointmentTreatment.setSelectedItem(null);
+
+}
+
+
+private void DisplayApointments(){
+    try {
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+        st = con.createStatement();
+        res = st.executeQuery("SELECT * FROM Dentist1.ApointmentsTbl");
+
+        // Set the table model only if it's not set yet
+        if (ApointmentsTbl.getModel() == null) {
+            ApointmentsTbl.setModel(DbUtils.resultSetToTableModel(res));
+        } else {
+            // If the table model is already set, just update the data
+            ((DefaultTableModel) ApointmentsTbl.getModel()).setRowCount(0);
+            while (res.next()) {
+                Object[] row = new Object[res.getMetaData().getColumnCount()];
+                for (int i = 0; i < row.length; i++) {
+                    row[i] = res.getObject(i + 1);
+                }
+                ((DefaultTableModel) ApointmentsTbl.getModel()).addRow(row);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Handle exceptions properly in your application
+    }
+}
+
+private void ApointmentCount(){
+    try {
+        st1 = con.createStatement();
+        res1 = st1.executeQuery("Select Max(ApointmentID) from Dentist1.ApointmentsTbl");
+        res1.next();
+        apointmentID = res1.getInt(1) + 1;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -412,14 +647,15 @@ public class AppointmentsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser ApointmentDate;
+    private javax.swing.JComboBox<String> ApointmentPatient;
+    private javax.swing.JTextField ApointmentTime;
+    private javax.swing.JComboBox<String> ApointmentTreatment;
+    private javax.swing.JTable ApointmentsTbl;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -437,6 +673,7 @@ public class AppointmentsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton showTime;
+    private cambodia.raven.Time time;
     // End of variables declaration//GEN-END:variables
 }

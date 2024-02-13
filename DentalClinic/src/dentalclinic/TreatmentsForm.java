@@ -99,6 +99,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
         ClearBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel5.setBackground(new java.awt.Color(2, 13, 41));
 

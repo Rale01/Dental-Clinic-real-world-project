@@ -73,6 +73,7 @@ public class PatientsForm extends javax.swing.JFrame {
         DisplayPatients();
         
         PatientCount();
+        ClearAll();
     }
 
     /**
@@ -477,7 +478,9 @@ public class PatientsForm extends javax.swing.JFrame {
                 add.setString(4, PatientAddress.getText());;
                 add.setString(5, PatientGender.getSelectedItem().toString());
                 add.setString(6, PatientAllergies.getText());
-                add.setString(7, DOB.getDate().toString());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(DOB.getDate());
+                add.setString(7, formattedDate.toString());
                 int row = add.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Patient Successfully Added!");
                 con.close();
@@ -516,10 +519,12 @@ public class PatientsForm extends javax.swing.JFrame {
         }else{
             try {
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = sdf.format(DOB.getDate());
                 String query = "Update Dentist1.PatientsTbl set PatientName ='" + PatientName.getText() +
                          "'" + ", Phone ='" + Phone.getText() + "'" + ", PatientAddress ='" + PatientAddress.getText() + 
                         "'" + ", PatientGender ='" + PatientGender.getSelectedItem().toString() + "'" + ", PatientAllergies ='" +
-                        PatientAllergies.getText() + "'" + ", DOB ='" + DOB.getDate().toString() + "'" + " where PatientID = " + key;
+                        PatientAllergies.getText() + "'" + ", DOB ='" + formattedDate.toString() + "'" + " where PatientID = " + key;
                 Statement Update = con.createStatement();
                 Update.execute(query);
                 JOptionPane.showMessageDialog(this, "Patient Successfully Updated!");
@@ -561,10 +566,9 @@ private void ClearAll(){
     PatientName.setText("");
     Phone.setText("");
     PatientAddress.setText("");
-    PatientGender.setSelectedItem("Male");
+    PatientGender.setSelectedItem(null);
     PatientAllergies.setText("");
-    Calendar currentDate = Calendar.getInstance();
-    DOB.setCalendar(currentDate);
+    DOB.setCalendar(null);
 }
     
 private void DisplayPatients(){
