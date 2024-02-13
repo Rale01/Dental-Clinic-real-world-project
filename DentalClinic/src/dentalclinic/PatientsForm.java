@@ -352,32 +352,27 @@ public class PatientsForm extends javax.swing.JFrame {
                                     .addComponent(jLabel21)
                                     .addComponent(PatientName, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel22)
-                                    .addComponent(Phone, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(Phone, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(41, 41, 41)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel23)
-                                    .addComponent(PatientAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(PatientAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(41, 41, 41)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(41, 41, 41)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel25)
-                                            .addComponent(jLabel24)
-                                            .addComponent(PatientGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(DOB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(33, 33, 33)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel26)
-                                            .addComponent(PatientAllergies, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(98, 98, 98)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 43, Short.MAX_VALUE))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel25)
+                                        .addComponent(jLabel24)
+                                        .addComponent(PatientGender, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(DOB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(33, 33, 33)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel26)
+                                    .addComponent(PatientAllergies, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 283, Short.MAX_VALUE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -473,7 +468,6 @@ public class PatientsForm extends javax.swing.JFrame {
                     + " you should write N/D(Not disclosed).");
         }else{
             try {
-                //int PatientKey = 1;
                 PatientCount();
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
                 PreparedStatement add = con.prepareStatement("insert into PatientsTbl values(?, ?, ?, ?, ?, ?, ?)");
@@ -521,14 +515,13 @@ public class PatientsForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Patient needs to be selected!");
         }else{
             try {
-                int PatientKey = 1;
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
                 String query = "Update Dentist1.PatientsTbl set PatientName ='" + PatientName.getText() +
                          "'" + ", Phone ='" + Phone.getText() + "'" + ", PatientAddress ='" + PatientAddress.getText() + 
                         "'" + ", PatientGender ='" + PatientGender.getSelectedItem().toString() + "'" + ", PatientAllergies ='" +
                         PatientAllergies.getText() + "'" + ", DOB ='" + DOB.getDate().toString() + "'" + " where PatientID = " + key;
-                Statement Add = con.createStatement();
-                Add.execute(query);
+                Statement Update = con.createStatement();
+                Update.execute(query);
                 JOptionPane.showMessageDialog(this, "Patient Successfully Updated!");
                 DisplayPatients();
                 ClearAll();
@@ -539,15 +532,14 @@ public class PatientsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-                     if(key == 0){
+        if(key == 0){
             JOptionPane.showMessageDialog(this, "Patient needs to be selected!");
         }else{
             try {
-                int PatientKey = 1;
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
                 String query = "Delete from Dentist1.PatientsTbl where PatientID = " + key;
-                Statement Add = con.createStatement();
-                Add.execute(query);
+                Statement Delete = con.createStatement();
+                Delete.execute(query);
                 JOptionPane.showMessageDialog(this, "Patient Successfully Deleted!");
                 DisplayPatients();
                 ClearAll();

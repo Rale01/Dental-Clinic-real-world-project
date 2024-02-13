@@ -4,6 +4,24 @@
  */
 package dentalclinic;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author Dell
@@ -13,8 +31,39 @@ public class TreatmentsForm extends javax.swing.JFrame {
     /**
      * Creates new form TreatmentsForm
      */
+    
+    Connection con = null;
+    Statement st = null, st1 = null;
+    ResultSet res = null, res1 = null;
+    int treatmentID = 0;
+    int key = 0;
+    
     public TreatmentsForm() {
         initComponents();
+        
+        TableColumnModel columnModel = TreatmentsTbl.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(180);
+        columnModel.getColumn(2).setPreferredWidth(150);
+
+        TreatmentsTbl.getTableHeader().setFont(new Font("Century Gothic", Font.BOLD, 25));
+        TreatmentsTbl.getTableHeader().setOpaque(true);
+
+        // Create a new instance of DefaultTableCellRenderer
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+
+        // Set the background color
+        headerRenderer.setBackground(new Color(2, 13, 41, 255));
+
+        // Set the foreground color (font color)
+        headerRenderer.setForeground(new Color(255, 255, 255)); // Set to white for example
+
+        // Set the default renderer for the table header
+        TreatmentsTbl.getTableHeader().setDefaultRenderer(headerRenderer);
+        
+        
+        DisplayTreatments();       
+        TreatmentCount();
     }
 
     /**
@@ -37,18 +86,17 @@ public class TreatmentsForm extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel42 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        TreatmentName = new javax.swing.JTextField();
         jLabel44 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jTextField10 = new javax.swing.JTextField();
+        TreatmentsTbl = new javax.swing.JTable();
+        DeleteBtn = new javax.swing.JButton();
+        AddBtn = new javax.swing.JButton();
+        EditBtn = new javax.swing.JButton();
+        TreatmentCost = new javax.swing.JTextField();
         jComboBox8 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        ClearBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,16 +138,16 @@ public class TreatmentsForm extends javax.swing.JFrame {
         jLabel43.setForeground(new java.awt.Color(2, 13, 41));
         jLabel43.setText("Name:");
 
-        jTextField7.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTextField7.setForeground(new java.awt.Color(2, 13, 41));
+        TreatmentName.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        TreatmentName.setForeground(new java.awt.Color(2, 13, 41));
 
         jLabel44.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel44.setForeground(new java.awt.Color(2, 13, 41));
         jLabel44.setText("Cost:");
 
-        jTable3.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTable3.setForeground(new java.awt.Color(2, 13, 41));
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        TreatmentsTbl.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        TreatmentsTbl.setForeground(new java.awt.Color(2, 13, 41));
+        TreatmentsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -110,42 +158,76 @@ public class TreatmentsForm extends javax.swing.JFrame {
                 "ID", "Name", "Cost"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        TreatmentsTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TreatmentsTblMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(TreatmentsTbl);
 
-        jButton4.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(2, 13, 41));
-        jButton4.setText("Delete");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        DeleteBtn.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        DeleteBtn.setForeground(new java.awt.Color(2, 13, 41));
+        DeleteBtn.setText("Delete");
+        DeleteBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DeleteBtnMouseClicked(evt);
+            }
+        });
+        DeleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                DeleteBtnActionPerformed(evt);
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(2, 13, 41));
-        jButton5.setText("Add");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        AddBtn.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        AddBtn.setForeground(new java.awt.Color(2, 13, 41));
+        AddBtn.setText("Add");
+        AddBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddBtnMouseClicked(evt);
+            }
+        });
+        AddBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                AddBtnActionPerformed(evt);
             }
         });
 
-        jButton6.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(2, 13, 41));
-        jButton6.setText("Edit");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        EditBtn.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        EditBtn.setForeground(new java.awt.Color(2, 13, 41));
+        EditBtn.setText("Edit");
+        EditBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EditBtnMouseClicked(evt);
+            }
+        });
+        EditBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                EditBtnActionPerformed(evt);
             }
         });
 
-        jTextField10.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTextField10.setForeground(new java.awt.Color(2, 13, 41));
+        TreatmentCost.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        TreatmentCost.setForeground(new java.awt.Color(2, 13, 41));
 
         jComboBox8.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         jComboBox8.setForeground(new java.awt.Color(2, 13, 41));
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+
+        ClearBtn.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        ClearBtn.setForeground(new java.awt.Color(2, 13, 41));
+        ClearBtn.setText("Clear All Fields");
+        ClearBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ClearBtnMouseClicked(evt);
+            }
+        });
+        ClearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -160,29 +242,27 @@ public class TreatmentsForm extends javax.swing.JFrame {
                         .addGap(16, 16, 16)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(90, 90, 90)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(75, 75, 75)
-                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(50, 50, 50))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(TreatmentName, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel43))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                                        .addGap(24, 24, 24)
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel44)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(301, 301, 301))))))
+                                            .addComponent(TreatmentCost, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel44)))
+                                    .addComponent(jLabel42))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4))
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel42)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jLabel4)))
+                                .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(59, 59, 59)
+                                .addComponent(EditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(53, 53, 53)
+                                .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)))))
                 .addContainerGap())
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
@@ -204,31 +284,23 @@ public class TreatmentsForm extends javax.swing.JFrame {
                     .addComponent(jLabel44))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton6)
-                            .addComponent(jButton4)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5)))
+                    .addComponent(TreatmentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TreatmentCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EditBtn)
+                    .addComponent(DeleteBtn)
+                    .addComponent(AddBtn)
+                    .addComponent(ClearBtn))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(449, 449, 449)
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(320, Short.MAX_VALUE)))
         );
-
-        jComboBox6.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox6.setForeground(new java.awt.Color(2, 13, 41));
-
-        jComboBox7.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox7.setForeground(new java.awt.Color(2, 13, 41));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -237,41 +309,28 @@ public class TreatmentsForm extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(113, 113, 113)
-                                .addComponent(jLabel37))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(jLabel36))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(94, 94, 94)
-                                .addComponent(jLabel39))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(79, 79, 79)
-                                .addComponent(jLabel40))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(87, 87, 87)
-                                .addComponent(jLabel41))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(141, 141, 141)
-                                .addComponent(jLabel3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(113, 113, 113)
+                        .addComponent(jLabel37))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jLabel36))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(jLabel39))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(jLabel40))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(jLabel41))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 85, Short.MAX_VALUE)
                         .addComponent(jLabel38)
-                        .addGap(82, 82, 82)))
+                        .addGap(104, 104, 104)))
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(480, 480, 480)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(551, Short.MAX_VALUE)))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                    .addContainerGap(490, Short.MAX_VALUE)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(471, 471, 471)))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,20 +349,10 @@ public class TreatmentsForm extends javax.swing.JFrame {
                 .addComponent(jLabel41)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel38)
-                .addGap(87, 87, 87))
+                .addGap(89, 89, 89))
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(456, 456, 456)
-                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(320, Short.MAX_VALUE)))
-            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                    .addContainerGap(466, Short.MAX_VALUE)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(447, 447, 447)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -320,20 +369,137 @@ public class TreatmentsForm extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_DeleteBtnActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void AddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_AddBtnActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void EditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_EditBtnActionPerformed
 
+    private void ClearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearBtnMouseClicked
+        ClearAll();
+    }//GEN-LAST:event_ClearBtnMouseClicked
+
+    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
+        ClearAll();// TODO add your handling code here:
+    }//GEN-LAST:event_ClearBtnActionPerformed
+
+    private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
+                if(TreatmentName.getText().isEmpty() || TreatmentCost.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "The fields for treatment name and cost shouldnt be empty!");
+        }else{
+            try {
+                TreatmentCount();
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                PreparedStatement add = con.prepareStatement("insert into TreatmentsTbl values(?, ?, ?)");
+                add.setInt(1, treatmentID);
+                add.setString(2, TreatmentName.getText());
+                add.setInt(3, Integer.valueOf(TreatmentCost.getText()));
+                int row = add.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Treatment Successfully Added!");
+                con.close();
+                DisplayTreatments();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_AddBtnMouseClicked
+
+    private void TreatmentsTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TreatmentsTblMouseClicked
+        DefaultTableModel model = (DefaultTableModel) TreatmentsTbl.getModel();
+        int myIndex = TreatmentsTbl.getSelectedRow();
+        key = Integer.valueOf(model.getValueAt(myIndex, 0).toString());
+        TreatmentName.setText(model.getValueAt(myIndex, 1).toString());
+        TreatmentCost.setText(model.getValueAt(myIndex, 2).toString());
+    }//GEN-LAST:event_TreatmentsTblMouseClicked
+
+    private void DeleteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteBtnMouseClicked
+            if(key == 0){
+            JOptionPane.showMessageDialog(this, "Treatment needs to be selected!");
+        }else{
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                String query = "Delete from Dentist1.TreatmentsTbl where TreatmentID = " + key;
+                Statement Delete = con.createStatement();
+                Delete.execute(query);
+                JOptionPane.showMessageDialog(this, "Treatment Successfully Deleted!");
+                DisplayTreatments();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_DeleteBtnMouseClicked
+
+    private void EditBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditBtnMouseClicked
+        if(key == 0){
+            JOptionPane.showMessageDialog(this, "Patient needs to be selected!");
+        }else{
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                String query = "Update Dentist1.TreatmentsTbl set TreatmentName ='" + TreatmentName.getText() +
+                         "'" + ", TreatmentCost =" +  Integer.parseInt(TreatmentCost.getText()) + " where TreatmentID = " + key;
+                Statement Update = con.createStatement();
+                Update.execute(query);
+                JOptionPane.showMessageDialog(this, "Treatment Successfully Updated!");
+                DisplayTreatments();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_EditBtnMouseClicked
+
+    
+    private void ClearAll(){
+    TreatmentName.setText("");
+    TreatmentCost.setText("");
+}
+    
+    private void DisplayTreatments(){
+    try {
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+        st = con.createStatement();
+        res = st.executeQuery("SELECT * FROM Dentist1.TreatmentsTbl");
+
+        // Set the table model only if it's not set yet
+        if (TreatmentsTbl.getModel() == null) {
+            TreatmentsTbl.setModel(DbUtils.resultSetToTableModel(res));
+        } else {
+            // If the table model is already set, just update the data
+            ((DefaultTableModel) TreatmentsTbl.getModel()).setRowCount(0);
+            while (res.next()) {
+                Object[] row = new Object[res.getMetaData().getColumnCount()];
+                for (int i = 0; i < row.length; i++) {
+                    row[i] = res.getObject(i + 1);
+                }
+                ((DefaultTableModel) TreatmentsTbl.getModel()).addRow(row);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Handle exceptions properly in your application
+    }
+}
+    
+    private void TreatmentCount(){
+    try {
+        st1 = con.createStatement();
+        res1 = st1.executeQuery("Select Max(TreatmentID) from Dentist1.TreatmentsTbl");
+        res1.next();
+        treatmentID = res1.getInt(1) + 1;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -370,39 +536,15 @@ public class TreatmentsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
+    private javax.swing.JButton AddBtn;
+    private javax.swing.JButton ClearBtn;
+    private javax.swing.JButton DeleteBtn;
+    private javax.swing.JButton EditBtn;
+    private javax.swing.JTextField TreatmentCost;
+    private javax.swing.JTextField TreatmentName;
+    private javax.swing.JTable TreatmentsTbl;
     private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
@@ -413,25 +555,8 @@ public class TreatmentsForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }
