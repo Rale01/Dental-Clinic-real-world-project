@@ -4,6 +4,22 @@
  */
 package dentalclinic;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author Dell
@@ -13,8 +29,45 @@ public class PrescriptionsForm extends javax.swing.JFrame {
     /**
      * Creates new form PrescriptionsForm
      */
+    Connection con = null;
+    Statement st = null, st1 = null;
+    ResultSet res = null, res1 = null;
+    int key = 1;
+    int perscriptionID = 0;
     public PrescriptionsForm() {
         initComponents();
+        GetPatients();
+        GetTreatments();
+        
+        TableColumnModel columnModel = PerscriptionsTbl.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(180);
+        columnModel.getColumn(2).setPreferredWidth(150);
+        columnModel.getColumn(3).setPreferredWidth(180);
+        columnModel.getColumn(4).setPreferredWidth(150);
+        columnModel.getColumn(5).setPreferredWidth(100);
+ 
+
+        PerscriptionsTbl.getTableHeader().setFont(new Font("Century Gothic", Font.BOLD, 25));
+        PerscriptionsTbl.getTableHeader().setOpaque(true);
+
+        // Create a new instance of DefaultTableCellRenderer
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+
+        // Set the background color
+        headerRenderer.setBackground(new Color(2, 13, 41, 255));
+
+        // Set the foreground color (font color)
+        headerRenderer.setForeground(new Color(255, 255, 255)); // Set to white for example
+
+        // Set the default renderer for the table header
+        PerscriptionsTbl.getTableHeader().setDefaultRenderer(headerRenderer);
+        
+        DisplayPerscriptions();
+        
+        PerscriptionCount();
+        ClearAll();
+        PerscriptionCost.setEditable(false);
     }
 
     /**
@@ -38,24 +91,22 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        PerscriptionQuantity = new javax.swing.JTextField();
+        PerscriptionsMedicines = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        PerscriptionsTbl = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        PerscriptionCost = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jComboBox10 = new javax.swing.JComboBox<>();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        PerscriptionPatient = new javax.swing.JComboBox<>();
+        PerscriptionTreatment = new javax.swing.JComboBox<>();
+        jButton6 = new javax.swing.JButton();
 
         jComboBox9.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         jComboBox9.setForeground(new java.awt.Color(2, 13, 41));
@@ -101,18 +152,20 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(2, 13, 41));
         jLabel21.setText("Treatment:");
 
-        jTextField1.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(2, 13, 41));
-
         jLabel22.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(2, 13, 41));
         jLabel22.setText("Cost:");
 
-        jTextField2.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionQuantity.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        PerscriptionQuantity.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionQuantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PerscriptionQuantityActionPerformed(evt);
+            }
+        });
 
-        jTextField3.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTextField3.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionsMedicines.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        PerscriptionsMedicines.setForeground(new java.awt.Color(2, 13, 41));
 
         jLabel23.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(2, 13, 41));
@@ -122,9 +175,9 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jLabel26.setForeground(new java.awt.Color(2, 13, 41));
         jLabel26.setText("Medicines:");
 
-        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(2, 13, 41));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        PerscriptionsTbl.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        PerscriptionsTbl.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionsTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -132,14 +185,24 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Patient", "Treatment", "Cost", "Medicines", "Quantity"
+                "ID", "Treatment", "Cost", "Patient", "Quantity", "Medicines"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        PerscriptionsTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PerscriptionsTblMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(PerscriptionsTbl);
 
         jButton2.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(2, 13, 41));
         jButton2.setText("Delete");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -149,6 +212,11 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton3.setForeground(new java.awt.Color(2, 13, 41));
         jButton3.setText("Add");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -158,6 +226,11 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton4.setForeground(new java.awt.Color(2, 13, 41));
         jButton4.setText("Edit");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -166,21 +239,37 @@ public class PrescriptionsForm extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
 
-        jTextField4.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jTextField4.setForeground(new java.awt.Color(2, 13, 41));
-
-        jComboBox2.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox2.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionCost.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        PerscriptionCost.setForeground(new java.awt.Color(2, 13, 41));
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(2, 13, 41));
         jLabel27.setText("Quantity:");
 
-        jComboBox8.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox8.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionPatient.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        PerscriptionPatient.setForeground(new java.awt.Color(2, 13, 41));
 
-        jComboBox10.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox10.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionTreatment.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
+        PerscriptionTreatment.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionTreatment.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                PerscriptionTreatmentItemStateChanged(evt);
+            }
+        });
+
+        jButton6.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(2, 13, 41));
+        jButton6.setText("Clear All Fields");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton6MouseClicked(evt);
+            }
+        });
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -193,103 +282,86 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                         .addComponent(jScrollPane1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel21)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel22)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(41, 41, 41)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel27)
-                                        .addComponent(jLabel23)
-                                        .addComponent(jComboBox10, 0, 289, Short.MAX_VALUE)
-                                        .addComponent(jTextField2))
-                                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel26)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 14, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4)))))
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)))
                 .addContainerGap())
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(296, 296, 296)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(297, Short.MAX_VALUE)))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(296, 296, 296)
-                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(297, Short.MAX_VALUE)))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(PerscriptionCost, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(PerscriptionTreatment, javax.swing.GroupLayout.Alignment.LEADING, 0, 300, Short.MAX_VALUE))
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel22))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PerscriptionPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel27)
+                            .addComponent(PerscriptionQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel23))
+                        .addGap(55, 55, 55)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26)
+                            .addComponent(PerscriptionsMedicines, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 103, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel21)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(95, 95, 95)
-                                .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel22)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel27)
-                                .addGap(1, 1, 1)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel23))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel15)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel21))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(95, 95, 95)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(PerscriptionPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(PerscriptionTreatment, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel22)
+                                    .addComponent(jLabel27))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(PerscriptionCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(PerscriptionQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(68, 68, 68)
+                                .addComponent(jLabel26)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(PerscriptionsMedicines, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(44, 44, 44)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel23))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
-                .addGap(40, 40, 40)
+                            .addComponent(jButton3)
+                            .addComponent(jButton4)
+                            .addComponent(jButton2)
+                            .addComponent(jButton6))))
+                .addGap(49, 49, 49)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(11, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(475, 475, 475)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(438, Short.MAX_VALUE)))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(449, 449, 449)
-                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(457, Short.MAX_VALUE)))
         );
-
-        jComboBox7.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jComboBox7.setForeground(new java.awt.Color(2, 13, 41));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -320,11 +392,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(490, Short.MAX_VALUE)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(471, 471, 471)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,11 +412,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 .addComponent(jLabel17)
                 .addGap(24, 24, 24))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(466, Short.MAX_VALUE)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(447, 447, 447)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -383,6 +445,235 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+if(PerscriptionTreatment.getSelectedItem() == null || PerscriptionPatient.getSelectedItem() == null 
+        || PerscriptionQuantity.getText().isEmpty() || PerscriptionsMedicines.getText().isEmpty()){
+    JOptionPane.showMessageDialog(this, "Missing information. Please fill out all of the fields.");
+}else{
+    try {
+        PerscriptionCount();
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+
+        // Fetch the cost of the selected treatment from the database
+        String selectedTreatment = PerscriptionTreatment.getSelectedItem().toString();
+        PreparedStatement getCostStatement = con.prepareStatement("SELECT TreatmentCost FROM TreatmentsTbl WHERE TreatmentName = ?");
+        getCostStatement.setString(1, selectedTreatment);
+        ResultSet costResult = getCostStatement.executeQuery();
+        if (costResult.next()) {
+            double treatmentCost = costResult.getDouble("TreatmentCost");
+
+            // Calculate the total cost
+            double quantity = Double.parseDouble(PerscriptionQuantity.getText());
+            double totalCost = treatmentCost * quantity;
+
+            // Insert into PerscriptionsTbl
+            PreparedStatement add = con.prepareStatement("insert into PerscriptionsTbl values(?, ?, ?, ?, ?, ?)");
+            add.setInt(1, perscriptionID);
+            add.setString(2, selectedTreatment);
+            add.setDouble(3, totalCost); // Use totalCost instead of PerscriptionCost.getText()
+            add.setString(4, PerscriptionPatient.getSelectedItem().toString());
+            add.setString(5, PerscriptionQuantity.getText());
+            add.setString(6, PerscriptionsMedicines.getText());
+            int row = add.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Perscription Successfully Added!");
+            con.close();
+            DisplayPerscriptions();
+            ClearAll();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selected treatment not found in database.");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
+        ClearAll();
+    }//GEN-LAST:event_jButton6MouseClicked
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void PerscriptionQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PerscriptionQuantityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PerscriptionQuantityActionPerformed
+
+    private void PerscriptionTreatmentItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_PerscriptionTreatmentItemStateChanged
+            if (evt.getStateChange() == ItemEvent.SELECTED) {
+        String selectedTreatment = PerscriptionTreatment.getSelectedItem().toString();
+        // Query the TreatmentsTbl to get the cost of the selected treatment
+        try {
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+            PreparedStatement pst = con.prepareStatement("SELECT TreatmentCost FROM Dentist1.TreatmentsTbl WHERE TreatmentName = ?");
+            pst.setString(1, selectedTreatment);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String cost = rs.getString("TreatmentCost");
+                PerscriptionCost.setText(cost);
+            }
+            rs.close();
+            pst.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_PerscriptionTreatmentItemStateChanged
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+    if (key == 0) {
+        JOptionPane.showMessageDialog(this, "Perscription needs to be selected!");
+    } else {
+        try {
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+            // Calculate new cost
+            double cost = Double.parseDouble(PerscriptionCost.getText());
+            int quantity = Integer.parseInt(PerscriptionQuantity.getText());
+            double newCost = cost * quantity;
+
+            // Update database
+            String query = "UPDATE Dentist1.PerscriptionsTbl SET PerscriptionTreatment = '" + PerscriptionTreatment.getSelectedItem().toString() + "', "
+                    + "PerscriptionQuantity = " + quantity + ", "
+                    + "PerscriptionCost = " + newCost + ", "
+                    + "PerscriptionPatient = '" + PerscriptionPatient.getSelectedItem().toString() + "', "
+                    + "PerscriptionMedicines = '" + PerscriptionsMedicines.getText() + "' "
+                    + "WHERE PerscriptionID = " + key;
+            Statement update = con.createStatement();
+            update.executeUpdate(query);
+
+            JOptionPane.showMessageDialog(this, "Perscription Successfully Updated!");
+            DisplayPerscriptions();
+            ClearAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void PerscriptionsTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PerscriptionsTblMouseClicked
+        DefaultTableModel model = (DefaultTableModel) PerscriptionsTbl.getModel();
+        int myIndex = PerscriptionsTbl.getSelectedRow();
+        key = Integer.valueOf(model.getValueAt(myIndex, 0).toString());
+        PerscriptionTreatment.setSelectedItem(model.getValueAt(myIndex, 1).toString());
+        int quantity = (int) model.getValueAt(myIndex, 4);
+        PerscriptionCost.setText(String.valueOf((int) model.getValueAt(myIndex, 2) / quantity));
+        PerscriptionPatient.setSelectedItem(model.getValueAt(myIndex, 3).toString());
+        PerscriptionQuantity.setText(model.getValueAt(myIndex, 4).toString());
+        PerscriptionsMedicines.setText(model.getValueAt(myIndex, 5).toString());
+    }//GEN-LAST:event_PerscriptionsTblMouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        if(key == 0){
+            JOptionPane.showMessageDialog(this, "Perscription needs to be selected!");
+        }else{
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                String query = "Delete from Dentist1.PerscriptionsTbl where PerscriptionID = " + key;
+                Statement Delete = con.createStatement();
+                Delete.execute(query);
+                JOptionPane.showMessageDialog(this, "Perscription Successfully Deleted!");
+                DisplayPerscriptions();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    
+    private void GetPatients(){
+            try {
+                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                    st = con.createStatement();
+                    res = st.executeQuery("SELECT * FROM Dentist1.PatientsTbl");
+                    
+                    while(res.next()){
+                        String patient = res.getString("PatientName");
+                        PerscriptionPatient.addItem(patient);
+                    }
+            } catch (Exception e) {
+            }
+}
+
+private void GetTreatments(){
+            try {
+                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+                    st = con.createStatement();
+                    res = st.executeQuery("SELECT * FROM Dentist1.TreatmentsTbl");
+                    
+                    while(res.next()){
+                        String treatment = res.getString("TreatmentName");
+                        PerscriptionTreatment.addItem(treatment);
+                    }
+            } catch (Exception e) {
+            }
+}
+
+    
+    
+private void ClearAll(){
+    PerscriptionTreatment.setSelectedItem(null);
+    PerscriptionCost.setText("");
+    PerscriptionQuantity.setText("");
+    PerscriptionPatient.setSelectedItem(null);
+    PerscriptionsMedicines.setText("");
+}
+    
+private void DisplayPerscriptions(){
+    try {
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+        st = con.createStatement();
+        res = st.executeQuery("SELECT * FROM Dentist1.PerscriptionsTbl");
+
+        // Set the table model only if it's not set yet
+        if (PerscriptionsTbl.getModel() == null) {
+            PerscriptionsTbl.setModel(DbUtils.resultSetToTableModel(res));
+        } else {
+            // If the table model is already set, just update the data
+            ((DefaultTableModel) PerscriptionsTbl.getModel()).setRowCount(0);
+            while (res.next()) {
+                Object[] row = new Object[res.getMetaData().getColumnCount()];
+                for (int i = 0; i < row.length; i++) {
+                    row[i] = res.getObject(i + 1);
+                }
+                ((DefaultTableModel) PerscriptionsTbl.getModel()).addRow(row);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Handle exceptions properly in your application
+    }
+}
+
+private void PerscriptionCount(){
+    try {
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+        PreparedStatement pst = con.prepareStatement("SELECT COUNT(*) AS count FROM PerscriptionsTbl");
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            perscriptionID = rs.getInt("count") + 1;
+        }
+        rs.close();
+        pst.close();
+        con.close();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+}
+    
+
+
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -419,13 +710,16 @@ public class PrescriptionsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField PerscriptionCost;
+    private javax.swing.JComboBox<String> PerscriptionPatient;
+    private javax.swing.JTextField PerscriptionQuantity;
+    private javax.swing.JComboBox<String> PerscriptionTreatment;
+    private javax.swing.JTextField PerscriptionsMedicines;
+    private javax.swing.JTable PerscriptionsTbl;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
@@ -444,10 +738,5 @@ public class PrescriptionsForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }
