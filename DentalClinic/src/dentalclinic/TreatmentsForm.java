@@ -5,6 +5,7 @@
 package dentalclinic;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -40,6 +41,9 @@ public class TreatmentsForm extends javax.swing.JFrame {
     
     public TreatmentsForm() {
         initComponents();
+        
+        TreatmentLbl.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        TreatmentLbl.setForeground(new Color(11, 112, 164, 255));
         
         TableColumnModel columnModel = TreatmentsTbl.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
@@ -80,7 +84,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
-        jLabel39 = new javax.swing.JLabel();
+        TreatmentLbl = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -108,26 +112,81 @@ public class TreatmentsForm extends javax.swing.JFrame {
         jLabel36.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(255, 255, 255));
         jLabel36.setText("Appointments");
+        jLabel36.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel36MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel36MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel36MouseExited(evt);
+            }
+        });
 
         jLabel37.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel37.setForeground(new java.awt.Color(255, 255, 255));
         jLabel37.setText("Patients");
+        jLabel37.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel37MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel37MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel37MouseExited(evt);
+            }
+        });
 
         jLabel38.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(255, 255, 255));
         jLabel38.setText("Logout");
+        jLabel38.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel38MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel38MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel38MouseExited(evt);
+            }
+        });
 
-        jLabel39.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        jLabel39.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel39.setText("Treatments");
+        TreatmentLbl.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        TreatmentLbl.setForeground(new java.awt.Color(255, 255, 255));
+        TreatmentLbl.setText("Treatments");
 
         jLabel40.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel40.setForeground(new java.awt.Color(255, 255, 255));
         jLabel40.setText("Prescriptions");
+        jLabel40.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel40MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel40MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel40MouseExited(evt);
+            }
+        });
 
         jLabel41.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(255, 255, 255));
         jLabel41.setText("Dashboard");
+        jLabel41.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel41MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel41MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel41MouseExited(evt);
+            }
+        });
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -215,6 +274,17 @@ public class TreatmentsForm extends javax.swing.JFrame {
         jComboBox8.setForeground(new java.awt.Color(2, 13, 41));
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel4MouseExited(evt);
+            }
+        });
 
         ClearBtn.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         ClearBtn.setForeground(new java.awt.Color(2, 13, 41));
@@ -244,40 +314,39 @@ public class TreatmentsForm extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel6Layout.createSequentialGroup()
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(TreatmentName, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel43))
-                                        .addGap(24, 24, 24)
-                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(TreatmentCost, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel44)))
-                                    .addComponent(jLabel42))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4))
+                                    .addComponent(TreatmentName, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel43))
+                                .addGap(24, 24, 24)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TreatmentCost, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel44))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(59, 59, 59)
                                 .addComponent(EditBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(53, 53, 53)
                                 .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)))))
+                                .addGap(41, 41, 41))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel42)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4)))))
                 .addContainerGap())
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(296, 296, 296)
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(309, Short.MAX_VALUE)))
+                    .addContainerGap(448, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel42))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel42)
                     .addComponent(jLabel4))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -310,27 +379,30 @@ public class TreatmentsForm extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addComponent(jLabel37))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(jLabel36))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(jLabel39))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel40))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(jLabel41))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(141, 141, 141)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 85, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel38)
-                        .addGap(104, 104, 104)))
+                        .addGap(158, 158, 158))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(113, 113, 113)
+                                .addComponent(jLabel37))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(61, 61, 61)
+                                .addComponent(jLabel36))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(94, 94, 94)
+                                .addComponent(TreatmentLbl))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(jLabel40))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(87, 87, 87)
+                                .addComponent(jLabel41))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(141, 141, 141)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)))
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -343,7 +415,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(jLabel36)
                 .addGap(34, 34, 34)
-                .addComponent(jLabel39)
+                .addComponent(TreatmentLbl)
                 .addGap(42, 42, 42)
                 .addComponent(jLabel40)
                 .addGap(37, 37, 37)
@@ -360,7 +432,10 @@ public class TreatmentsForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,6 +535,98 @@ public class TreatmentsForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_EditBtnMouseClicked
 
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+                System.exit(0);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jLabel37MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel37MouseClicked
+        new PatientsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel37MouseClicked
+
+    private void jLabel36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel36MouseClicked
+        new AppointmentsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel36MouseClicked
+
+    private void jLabel40MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel40MouseClicked
+        new PrescriptionsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel40MouseClicked
+
+    private void jLabel41MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel41MouseClicked
+        new DashboardForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel41MouseClicked
+
+    private void jLabel38MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel38MouseClicked
+        new LoginForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel38MouseClicked
+
+    private void jLabel37MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel37MouseEntered
+        jLabel37.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel37.setForeground(new Color(11, 112, 164, 255));
+        jLabel37.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel37MouseEntered
+
+    private void jLabel37MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel37MouseExited
+        jLabel37.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel37.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel37MouseExited
+
+    private void jLabel36MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel36MouseEntered
+        jLabel36.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel36.setForeground(new Color(11, 112, 164, 255));
+        jLabel36.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel36MouseEntered
+
+    private void jLabel36MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel36MouseExited
+        jLabel36.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel36.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel36MouseExited
+
+    private void jLabel40MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel40MouseEntered
+        jLabel40.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel40.setForeground(new Color(11, 112, 164, 255));
+        jLabel40.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel40MouseEntered
+
+    private void jLabel40MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel40MouseExited
+        jLabel40.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel40.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel40MouseExited
+
+    private void jLabel41MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel41MouseEntered
+        jLabel41.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel41.setForeground(new Color(11, 112, 164, 255));
+        jLabel41.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel41MouseEntered
+
+    private void jLabel41MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel41MouseExited
+        jLabel41.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel41.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel41MouseExited
+
+    private void jLabel38MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel38MouseEntered
+        jLabel38.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel38.setForeground(new Color(11, 112, 164, 255));
+        jLabel38.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel38MouseEntered
+
+    private void jLabel38MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel38MouseExited
+        jLabel38.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel38.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel38MouseExited
+
+    private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
+        jLabel4.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel4MouseEntered
+
+    private void jLabel4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseExited
+        jLabel4.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_jLabel4MouseExited
+
     
     private void ClearAll(){
     TreatmentName.setText("");
@@ -542,6 +709,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
     private javax.swing.JButton DeleteBtn;
     private javax.swing.JButton EditBtn;
     private javax.swing.JTextField TreatmentCost;
+    private javax.swing.JLabel TreatmentLbl;
     private javax.swing.JTextField TreatmentName;
     private javax.swing.JTable TreatmentsTbl;
     private javax.swing.JComboBox<String> jComboBox8;
@@ -549,7 +717,6 @@ public class TreatmentsForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;

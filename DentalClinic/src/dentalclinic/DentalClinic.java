@@ -4,6 +4,8 @@
  */
 package dentalclinic;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Dell
@@ -14,7 +16,7 @@ public class DentalClinic {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        LoadingForm.main(args);
     }
     
 }

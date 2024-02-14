@@ -5,6 +5,7 @@
 package dentalclinic;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.sql.Connection;
@@ -38,6 +39,9 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         initComponents();
         GetPatients();
         GetTreatments();
+        
+        PerscriptionLbl.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        PerscriptionLbl.setForeground(new Color(11, 112, 164, 255));
         
         TableColumnModel columnModel = PerscriptionsTbl.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
@@ -86,7 +90,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
+        PerscriptionLbl = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -121,26 +125,81 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Appointments");
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel14MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel14MouseExited(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Patients");
+        jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel16MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel16MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel16MouseExited(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Logout");
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel17MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel17MouseExited(evt);
+            }
+        });
 
         jLabel18.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Treatments");
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel18MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel18MouseExited(evt);
+            }
+        });
 
-        jLabel19.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("Prescriptions");
+        PerscriptionLbl.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        PerscriptionLbl.setForeground(new java.awt.Color(255, 255, 255));
+        PerscriptionLbl.setText("Prescriptions");
 
         jLabel20.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Dashboard");
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel20MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel20MouseExited(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -238,6 +297,17 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         });
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel4MouseExited(evt);
+            }
+        });
 
         PerscriptionCost.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         PerscriptionCost.setForeground(new java.awt.Color(2, 13, 41));
@@ -380,7 +450,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                         .addComponent(jLabel18))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(79, 79, 79)
-                        .addComponent(jLabel19))
+                        .addComponent(PerscriptionLbl))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(87, 87, 87)
                         .addComponent(jLabel20))
@@ -405,7 +475,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel18)
                 .addGap(42, 42, 42)
-                .addComponent(jLabel19)
+                .addComponent(PerscriptionLbl)
                 .addGap(37, 37, 37)
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -589,6 +659,98 @@ if(PerscriptionTreatment.getSelectedItem() == null || PerscriptionPatient.getSel
         }
     }//GEN-LAST:event_jButton2MouseClicked
 
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+                System.exit(0);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
+        new PatientsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel16MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        new AppointmentsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        new TreatmentsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        new DashboardForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        new LoginForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void jLabel16MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseEntered
+        jLabel16.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel16.setForeground(new Color(11, 112, 164, 255));
+        jLabel16.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel16MouseEntered
+
+    private void jLabel16MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseExited
+        jLabel16.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel16.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel16MouseExited
+
+    private void jLabel14MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseEntered
+        jLabel14.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel14.setForeground(new Color(11, 112, 164, 255));
+        jLabel14.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel14MouseEntered
+
+    private void jLabel14MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseExited
+        jLabel14.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel14.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel14MouseExited
+
+    private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
+        jLabel18.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel18.setForeground(new Color(11, 112, 164, 255));
+        jLabel18.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel18MouseEntered
+
+    private void jLabel18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseExited
+        jLabel18.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel18.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel18MouseExited
+
+    private void jLabel20MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseEntered
+        jLabel20.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel20.setForeground(new Color(11, 112, 164, 255));
+        jLabel20.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel20MouseEntered
+
+    private void jLabel20MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseExited
+        jLabel20.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel20.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel20MouseExited
+
+    private void jLabel17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseEntered
+        jLabel17.setFont(new Font("Century Gothic", Font.PLAIN, 38));
+        jLabel17.setForeground(new Color(11, 112, 164, 255));
+        jLabel17.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel17MouseEntered
+
+    private void jLabel17MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseExited
+        jLabel17.setFont(new Font("Century Gothic", Font.PLAIN, 36));
+        jLabel17.setForeground(new Color(255, 255, 255, 255));
+    }//GEN-LAST:event_jLabel17MouseExited
+
+    private void jLabel4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseEntered
+        jLabel4.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel4MouseEntered
+
+    private void jLabel4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseExited
+        jLabel4.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_jLabel4MouseExited
+
     
     private void GetPatients(){
             try {
@@ -711,6 +873,7 @@ private void PerscriptionCount(){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField PerscriptionCost;
+    private javax.swing.JLabel PerscriptionLbl;
     private javax.swing.JComboBox<String> PerscriptionPatient;
     private javax.swing.JTextField PerscriptionQuantity;
     private javax.swing.JComboBox<String> PerscriptionTreatment;
@@ -727,7 +890,6 @@ private void PerscriptionCount(){
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
