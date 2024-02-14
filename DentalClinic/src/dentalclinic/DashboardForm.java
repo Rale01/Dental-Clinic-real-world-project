@@ -4,6 +4,11 @@
  */
 package dentalclinic;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 /**
  *
  * @author Dell
@@ -13,8 +18,15 @@ public class DashboardForm extends javax.swing.JFrame {
     /**
      * Creates new form DashboardForm
      */
+    
+    Connection con = null;
+    Statement st = null, st1 = null, st2 = null, st3 = null;
+    ResultSet res = null, res1 = null, res2 = null, res3 = null;
+    
+    
     public DashboardForm() {
         initComponents();
+        getData();
     }
 
     /**
@@ -38,7 +50,7 @@ public class DashboardForm extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
+        TreatmentsNum = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -46,9 +58,9 @@ public class DashboardForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
+        PatientsNum = new javax.swing.JLabel();
+        ApointmentsNum = new javax.swing.JLabel();
+        PerscriptionsNum = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -142,13 +154,13 @@ public class DashboardForm extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
 
-        jLabel26.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(2, 13, 41));
-        jLabel26.setText("NUM");
+        TreatmentsNum.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        TreatmentsNum.setForeground(new java.awt.Color(2, 13, 41));
+        TreatmentsNum.setText("NUM");
 
         jLabel27.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(2, 13, 41));
-        jLabel27.setText("Number of apointments:");
+        jLabel27.setText("Number of appointments:");
 
         jLabel28.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(2, 13, 41));
@@ -166,17 +178,17 @@ public class DashboardForm extends javax.swing.JFrame {
         jLabel29.setForeground(new java.awt.Color(2, 13, 41));
         jLabel29.setText("Number of patients:");
 
-        jLabel30.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(2, 13, 41));
-        jLabel30.setText("NUM");
+        PatientsNum.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        PatientsNum.setForeground(new java.awt.Color(2, 13, 41));
+        PatientsNum.setText("NUM");
 
-        jLabel31.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(2, 13, 41));
-        jLabel31.setText("NUM");
+        ApointmentsNum.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        ApointmentsNum.setForeground(new java.awt.Color(2, 13, 41));
+        ApointmentsNum.setText("NUM");
 
-        jLabel32.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jLabel32.setForeground(new java.awt.Color(2, 13, 41));
-        jLabel32.setText("NUM");
+        PerscriptionsNum.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        PerscriptionsNum.setForeground(new java.awt.Color(2, 13, 41));
+        PerscriptionsNum.setText("NUM");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -199,14 +211,14 @@ public class DashboardForm extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel31))
+                                .addComponent(ApointmentsNum))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel30))
+                                        .addComponent(PatientsNum))
                                     .addComponent(jLabel29))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,12 +229,12 @@ public class DashboardForm extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel26)))
+                                        .addComponent(TreatmentsNum)))
                                 .addGap(18, 18, 18))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel32)
+                                .addComponent(PerscriptionsNum)
                                 .addGap(110, 110, 110))))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -243,13 +255,13 @@ public class DashboardForm extends javax.swing.JFrame {
                             .addComponent(jLabel6))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(71, 71, 71)
-                            .addComponent(jLabel26))
+                            .addComponent(TreatmentsNum))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLabel2)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(77, 77, 77)
-                        .addComponent(jLabel30)))
+                        .addComponent(PatientsNum)))
                 .addGap(114, 114, 114)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
@@ -257,7 +269,7 @@ public class DashboardForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(40, 40, 40)
-                        .addComponent(jLabel31)
+                        .addComponent(ApointmentsNum)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -266,7 +278,7 @@ public class DashboardForm extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel32)
+                                    .addComponent(PerscriptionsNum)
                                     .addGap(43, 43, 43)))
                             .addComponent(jLabel3))
                         .addGap(95, 95, 95))))
@@ -294,6 +306,41 @@ public class DashboardForm extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+private void getData(){
+    try {
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/DentalClinicDatabase", "Dentist1", "DentalClinicDentist1");
+        st = con.createStatement();
+        st1 = con.createStatement();
+        st2 = con.createStatement();
+        st3 = con.createStatement(); // Initialize st3 here
+        res = st.executeQuery("Select count(*) from Dentist1.PatientsTbl");
+        res1 = st1.executeQuery("Select count(*) from Dentist1.TreatmentsTbl");
+        res2 = st2.executeQuery("Select count(*) from Dentist1.ApointmentsTbl");
+        res3 = st3.executeQuery("Select count(*) from Dentist1.PerscriptionsTbl");
+        
+        while(res.next()){
+            PatientsNum.setText("" + res.getInt(1));
+        }
+        
+        while(res1.next()){
+            TreatmentsNum.setText("" + res1.getInt(1));
+        }
+                    
+        while(res2.next()){
+            ApointmentsNum.setText("" + res2.getInt(1));
+        }
+                                
+        while(res3.next()){
+            PerscriptionsNum.setText("" + res3.getInt(1));
+        }
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -327,6 +374,10 @@ public class DashboardForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ApointmentsNum;
+    private javax.swing.JLabel PatientsNum;
+    private javax.swing.JLabel PerscriptionsNum;
+    private javax.swing.JLabel TreatmentsNum;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -337,14 +388,10 @@ public class DashboardForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
