@@ -20,4 +20,5 @@ The **Dental Clinic Management System** is a comprehensive software solution des
 - **Libraries**: TimeChooser and JCalendar libraries were used to enhance the user interface and provide additional functionality.
 
 ## Video Showcase
+![Animated GIF](https://s12.gifyu.com/images/SaCpp.gif)
 
