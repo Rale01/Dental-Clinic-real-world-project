@@ -66,6 +66,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
 
         // Set the default renderer for the table header
         PerscriptionsTbl.getTableHeader().setDefaultRenderer(headerRenderer);
+        PerscriptionsTbl.setRowHeight(40);
         
         DisplayPerscriptions();
         
@@ -119,8 +120,6 @@ public class PrescriptionsForm extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(2, 13, 41));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\250x250.jpg")); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
@@ -296,7 +295,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/close.png"))); // NOI18N
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
@@ -392,9 +391,7 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel23))
+                        .addComponent(jLabel4))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -403,7 +400,9 @@ public class PrescriptionsForm extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel21))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel21)
+                                            .addComponent(jLabel23)))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(95, 95, 95)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

@@ -72,8 +72,6 @@ public class DashboardForm extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(2, 13, 41));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\250x250.jpg")); // NOI18N
-
         jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Appointments");
@@ -212,7 +210,7 @@ public class DashboardForm extends javax.swing.JFrame {
         jLabel25.setForeground(new java.awt.Color(2, 13, 41));
         jLabel25.setText("Number of treatments:");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/close.png"))); // NOI18N
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
@@ -237,7 +235,7 @@ public class DashboardForm extends javax.swing.JFrame {
         jLabel28.setForeground(new java.awt.Color(2, 13, 41));
         jLabel28.setText("Number of perscriptions:");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\output-onlinetools (1).png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/patients-icon.png"))); // NOI18N
 
         jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\iloveimg-resized\\patients.png")); // NOI18N
 

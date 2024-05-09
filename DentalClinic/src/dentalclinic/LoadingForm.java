@@ -44,7 +44,7 @@ public class LoadingForm extends javax.swing.JFrame {
         Percentage.setForeground(new java.awt.Color(255, 255, 255));
         Percentage.setText("%");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\dental-logo.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/loadingsmall.gif"))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -58,7 +58,7 @@ public class LoadingForm extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Developed by: Rastko Jokić");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\output-onlinegiftools.gif")); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/logo.png"))); // NOI18N
 
         MyProgressBar.setBackground(new java.awt.Color(2, 13, 41));
         MyProgressBar.setForeground(new java.awt.Color(255, 255, 255));
@@ -67,23 +67,29 @@ public class LoadingForm extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(276, 276, 276)
-                .addComponent(jLabel3))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(495, 495, 495))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
-                .addComponent(jLabel4)
-                .addGap(12, 12, 12)
-                .addComponent(Percentage)
-                .addGap(6, 6, 6)
-                .addComponent(jLabel7))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(441, 441, 441)
-                .addComponent(jLabel5))
-            .addComponent(MyProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 1161, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(507, 507, 507)
-                .addComponent(jLabel2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(276, 276, 276)
+                        .addComponent(jLabel3))
+                    .addComponent(MyProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 1161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(12, 12, 12)
+                        .addComponent(Percentage)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(78, 78, 78)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel2)))))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,18 +98,20 @@ public class LoadingForm extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(228, 228, 228)
+                                .addComponent(Percentage))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel7)
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(232, 232, 232)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(228, 228, 228)
-                        .addComponent(Percentage))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2)
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel7)))
-                .addGap(13, 13, 13)
-                .addComponent(jLabel5)
+                        .addComponent(jLabel4)))
                 .addGap(6, 6, 6)
                 .addComponent(MyProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
         );

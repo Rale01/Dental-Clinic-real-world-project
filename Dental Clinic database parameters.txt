@@ -1,0 +1,3 @@
+Database: DentalClinicDatabase
+- Username: Dentist1
+- Password: DentalClinicDentist1

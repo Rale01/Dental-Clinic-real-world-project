@@ -125,8 +125,6 @@ public class PatientsForm extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(2, 13, 41));
         jLabel13.setText("Login:");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\dental-logo.png")); // NOI18N
-
         jButton1.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(2, 13, 41));
         jButton1.setText("Login");
@@ -135,8 +133,6 @@ public class PatientsForm extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(2, 13, 41));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\250x250.jpg")); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
@@ -383,7 +379,7 @@ public class PatientsForm extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/close.png"))); // NOI18N
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
@@ -582,7 +578,7 @@ public class PatientsForm extends javax.swing.JFrame {
             date = sdf.parse((String) value);
             DOB.setDate(date);
         } catch (ParseException ex) {
-            Logger.getLogger(PatientsForm.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(PatientsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_PatientsTblMouseClicked

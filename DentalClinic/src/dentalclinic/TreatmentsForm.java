@@ -64,6 +64,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
 
         // Set the default renderer for the table header
         TreatmentsTbl.getTableHeader().setDefaultRenderer(headerRenderer);
+        TreatmentsTbl.setRowHeight(40);
         
         
         DisplayTreatments();       
@@ -106,8 +107,6 @@ public class TreatmentsForm extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel5.setBackground(new java.awt.Color(2, 13, 41));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\250x250.jpg")); // NOI18N
 
         jLabel36.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(255, 255, 255));
@@ -273,7 +272,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
         jComboBox8.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
         jComboBox8.setForeground(new java.awt.Color(2, 13, 41));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Dell\\Downloads\\Oxygen-Icons.org-Oxygen-Actions-window-close-1-removebg-preview (2).png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dentalclinic/close.png"))); // NOI18N
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
@@ -424,7 +423,7 @@ public class TreatmentsForm extends javax.swing.JFrame {
                 .addComponent(jLabel38)
                 .addGap(89, 89, 89))
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
