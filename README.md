@@ -24,45 +24,57 @@ The **Dental Clinic Management System** is a comprehensive software solution des
 ## Loading form
 
 - **Description:** Informs the user(dentist or asistant) about the time left for the software to load.
-
-![Image1](https://i.ibb.co/6sC7rqv/Screenshot-1.png)
-![Image2](https://i.ibb.co/9c82hXb/Screenshot-2.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/6sC7rqv/Screenshot-1.png">
+  <img width="80%" src="https://i.ibb.co/9c82hXb/Screenshot-2.png">
+  </p>
 
 ## Login form
 
 - **Description:** Lets the user(dentist or asistant) log in using the credentials.
-
-![Image3](https://i.ibb.co/L5m9cDW/Screenshot-3.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/L5m9cDW/Screenshot-3.png">
+  </p>
 
 ## Dashboard page
 
 - **Description:** Informs the user(dentist or asistant) about the amount of the patients, appointments, treatments and perscription that are currently stored in the database.
 
-![Image4](https://i.ibb.co/SKdsBQg/Screenshot-4.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/SKdsBQg/Screenshot-4.png">
+  </p>
 
 ## Patients page
 
 - **Description:** Allows the user(dentist or asistant) to manage patients of the dental clinic. 
 
-![Image5](https://i.ibb.co/D1cHcZP/Screenshot-5.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/D1cHcZP/Screenshot-5.png">
+  </p>
 
 ## Appointments page
 
 - **Description:** Allows the user(dentist or asistant) to manage appointments.
 
-![Image6](https://i.ibb.co/R0fGbb6/Screenshot-6.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/R0fGbb6/Screenshot-6.png">
+  </p>
 
 ## Treatments page
 
 - **Description:** Allows the user(dentist or asistant) to manage treatments that the dental clinic offers.
 
-![Image6](https://i.ibb.co/fntNx2p/Screenshot-7.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/fntNx2p/Screenshot-7.png">
+  </p>
 
 ## Perscriptions page
 
 - **Description:** Allows the user(dentist or asistant) to manage perscriptions for the patients.
 
-![Image6](https://i.ibb.co/sJZ33t6/Screenshot-8.png)
+   <p align="center">
+  <img width="80%" src="https://i.ibb.co/sJZ33t6/Screenshot-8.png">
+  </p>
 
 ## Video Showcase
 Click on this link: [Video Showcase](https://s12.gifyu.com/images/SaCpp.gif)
