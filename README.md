@@ -1,4 +1,4 @@
-# Dental Clinic Management System
+# Java Software Solution For Dental Clinic Management
 
 The **Dental Clinic Management System** is a comprehensive software solution designed to streamline the operations of dental clinics. Developed by Rastko Jokic, this system offers a modern and intuitive interface to manage patients, appointments, treatments, and prescriptions effectively.
 
