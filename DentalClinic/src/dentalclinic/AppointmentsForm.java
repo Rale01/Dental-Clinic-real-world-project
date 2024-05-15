@@ -600,7 +600,7 @@ public class AppointmentsForm extends javax.swing.JFrame {
             date = sdf.parse((String) value);
             ApointmentDate.setDate(date);
         } catch (ParseException ex) {
-            Logger.getLogger(PatientsForm.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(PatientsForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_ApointmentsTblMouseClicked
 
